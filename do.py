@@ -21,7 +21,9 @@ class Client:
             'accept': 'application/json',
             'authorization': self.auth_token
         }
-        self.ddContacts = None
+        self.doContacts = None
+        self.doObjectives = None
+        self.doPages = None
 
     def getMessagePerfomance(self, template_id, start=None, end=None):
         url = f'https://api.digitalonboarding.com/v1/templates/{template_id}/insights/message-performance'
@@ -30,9 +32,25 @@ class Client:
         return requests.get(url=url, headers=self.default_headers, timeout=300)
 
     def contacts(self, contact_id = None):
-        if self.ddContacts == None:
+        if self.doContacts == None:
             from doContacts import contacts
-            self.ddContacts = contacts(self)
+            self.doContacts = contacts(self)
         if contact_id:
-            self.ddContacts.contact_id = contact_id
-        return self.ddContacts
+            self.doContacts.contact_id = contact_id
+        return self.doContacts
+
+    def objectives(self, objective_id = None):
+        if self.doObjectives == None:
+            from doObjectives import objectives
+            self.doObjectives = objectives(self)
+        if objective_id:
+            self.doObjectives.objective_id = objective_id
+        return self.doObjectives
+
+    def pages(self, page_id):
+        if self.doPages == None:
+            from doPages import pages
+            self.doPages = pages(self)
+        if page_id:
+            self.doPages.page_id = page_id
+        return self.doPages
