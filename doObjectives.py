@@ -21,6 +21,7 @@ class objectives:
         self.objective_id = objective_id
 
         self.doPages = None
+        self.doMessages = None
 
     def list(self):
         self.req = requests.get('https://api.digitalonboarding.com/v1/objectives', headers=self.Client.default_headers)
@@ -39,3 +40,11 @@ class objectives:
         if page_id:
             self.doPages.page_id = page_id
         return self.doPages
+
+    def messages(self, message_id = None):
+        if self.doMessages == None:
+            from doMessages import messages
+            self.doMessages = messages(self.Client, self.objective_id, message_id)
+        if message_id:
+            self.doMessages.page_id = message_id
+        return self.doMessages

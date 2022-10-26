@@ -24,6 +24,7 @@ class Client:
         self.doContacts = None
         self.doObjectives = None
         self.doPages = None
+        self.doMessages = None
 
     def getMessagePerfomance(self, template_id, start=None, end=None):
         url = f'https://api.digitalonboarding.com/v1/templates/{template_id}/insights/message-performance'
@@ -47,10 +48,18 @@ class Client:
             self.doObjectives.objective_id = objective_id
         return self.doObjectives
 
-    def pages(self, page_id):
+    def pages(self, page_id = None):
         if self.doPages == None:
             from doPages import pages
             self.doPages = pages(self)
         if page_id:
             self.doPages.page_id = page_id
         return self.doPages
+
+    def messages(self, message_id = None):
+        if self.doMessages == None:
+            from doMessages import messages
+            self.doMessages = messages(self)
+        if message_id:
+            self.doMessages.page_id = message_id
+        return self.doMessages
