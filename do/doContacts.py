@@ -1,4 +1,5 @@
 import requests
+import json
 
 def formatArgs(locals):
     args = []
@@ -20,7 +21,6 @@ class contact:
     def __init__(self, data, Client):
         self.Client = Client
         self.data = data
-        self._type = data['_type']
         self.address = data['address']
         self.address2 = data['address2']
         self.birthdate = data['birthdate']
@@ -57,7 +57,6 @@ class contact:
                     email_verified = None, email_opted_in = None, email_authorized = None,
                     sms_verified = None, sms_opted_in = None, sms_authorized = None, unsubscribe_email = None, birthdate = None):
         payload = formatArgs(locals())
-        print(payload)
         self.req = requests.put(f'https://api.digitalonboarding.com/v1/contacts/{self.id}', headers=self.Client.default_headers, data=payload)
 
         self.status_code = self.req.status_code
@@ -70,6 +69,15 @@ class contact:
         self.status_code = self.req.status_code
         return self
 
+    def updateObjective(self, objective_id, status):
+        payload = {
+            "status":status
+        }
+        self.req = requests.put(f'https://api.digitalonboarding.com/v1/contacts/{self.id}/objectives/{objective_id}', headers=self.Client.default_headers, data=payload)
+
+        self.status_code = self.req.status_code
+        self.data = self.req.json()
+        return self
 
 class contacts:
     def __init__(self, Client):
@@ -153,3 +161,13 @@ class contacts:
         for x in self.data:
             list_contacts.append(contact(x, self.Client))
         return list_contacts
+
+    def updateObjective(self, objective_id, status):
+        payload = {
+            "status":status
+        }
+        self.req = requests.put(f'https://api.digitalonboarding.com/v1/contacts/{self.contact_id}/objectives/{objective_id}', headers=self.Client.default_headers, data=json.dumps(payload))
+
+        self.status_code = self.req.status_code
+        self.data = self.req.json()
+        return self
