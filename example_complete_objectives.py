@@ -5,4 +5,4 @@ do_client = Client('https://shawn.digitalonboarding.com', 'shawn@digitalonboardi
 
 objectives = do_client.objectives().list()
 for objective in objectives:
-    print(do_client.contacts('528549e3-b422-4db1-9de2-be2347664b50').updateObjective(objective.id, 'complete').status_code)
+    do_client.contacts('528549e3-b422-4db1-9de2-be2347664b50').updateObjective(objective.id, 'complete')
