@@ -145,7 +145,7 @@ class contacts:
 
         self.status_code = self.req.status_code
         self.data = self.req.json()
-        return self
+        return contact(self.data, self.Client)
     
     def delete(self):
         self.req = requests.delete(f'https://api.digitalonboarding.com/v1//contacts/{self.contact_id}', headers=self.Client.default_headers)
