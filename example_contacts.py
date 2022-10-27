@@ -18,6 +18,9 @@ def updateContact():
     contact_two = do_client.contacts('eefd2965-e3aa-4a53-9ab5-683c3d34c8a4').get()
     print(contact_two.name_first)
 
+def deleteContact():
+    contact = do_client.contacts('eefd2965-e3aa-4a53-9ab5-683c3d34c8a4').delete()
+
 def uploadContacts():
     contact_list = [
         {
