@@ -113,7 +113,6 @@ class campaigns:
         self.data = self.req.json()
         list_campaigns = []
         for x in self.data:
-            print(x)
             list_campaigns.append(campaign(x, self.Client))
         return list_campaigns
 
@@ -198,7 +197,7 @@ class campaigns:
         if start_date:
             url += f'&start_date={start_date}'
         else:
-            url += f'start_date'
+            url += f'&start_date'
         if end_date:
             url += f'&end_date={end_date}'
         else:
@@ -226,13 +225,12 @@ class campaigns:
         if start_date:
             url += f'&start_date={start_date}'
         else:
-            url += f'start_date'
+            url += f'&start_date'
         if end_date:
             url += f'&end_date={end_date}'
         else:
             url += f'&end_date'
         self.req = requests.get(url, headers=self.Client.default_headers)
-        print(self.req.json())
         try:
             return self.req.json()['value']['result']
         except:

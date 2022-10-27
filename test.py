@@ -1,7 +1,7 @@
 from do.do import Client
 import config
 
-do_client = Client('https://mobiloilcu.digitalonboarding.com/', 'shawn@digitalonboarding.com', config.passwd)
+do_client = Client('https://shawn.digitalonboarding.com/', 'shawn@digitalonboarding.com', config.passwd)
 #new_contact = do_client.contacts().create(
 #            unique_id="api_user_id",
 #            name_first="api",
@@ -11,7 +11,8 @@ do_client = Client('https://mobiloilcu.digitalonboarding.com/', 'shawn@digitalon
 #
 #print(new_contact.data['id'])
 #
-#response = do_client.contacts(new_contact.data['id']).update(birthdate='1994-11-25')
+#response = do_client.contacts('2b5a2632-852a-46b5-8ca5-54654040b3df').update(birthdate='1994-11-25')
+#print(response.data)
 #contact = do_client.contacts('8f95bd30-3a09-4183-b956-c7e98d1036c6').get()
 #print(contact.name_first)
 #response = do_client.contacts('8f95bd30-3a09-4183-b956-c7e98d1036c6').delete()
@@ -79,8 +80,42 @@ do_client = Client('https://mobiloilcu.digitalonboarding.com/', 'shawn@digitalon
 #except:
 #    pass
 
-campaign_obj = do_client.campaigns('aa646b1e-d771-46c2-a752-5b31b5e24a0d')
+#campaign_obj = do_client.campaigns('aa646b1e-d771-46c2-a752-5b31b5e24a0d')
 #print(campaign_obj.analytics(filters=['email_opened']))
 #print(campaign_obj.page_stats(start_date='2021-10-17', end_date='2022-10-24'))
 #print(campaign_obj.message_performance(start_date='2022-10-17', end_date='2022-10-24'))
-print(campaign_obj.objective_performance(start_date='2022-10-17', end_date='2022-10-24'))
+#print(campaign_obj.objective_performance(start_date='2022-10-17', end_date='2022-10-24'))
+#
+#accounts = do_client.contacts('2b5a2632-852a-46b5-8ca5-54654040b3df').accounts().list()
+#for account in accounts:
+#    print(account.id)
+
+#account_list = [
+#    {
+#        'account_number':'123456', 
+#        'contact.unique_id':'shawn_test_1', 
+#        'product.code':'TEST', 
+#        'product.type':'checking', 
+#        'nickname':'API Account 69'
+#    },
+#    {
+#        'account_number':'1234567', 
+#        'contact.unique_id':'shawn_test_1', 
+#        'product.code':'TEST', 
+#        'product.type':'checking', 
+#        'nickname':'API Account 421'
+#    }
+#]
+#
+#new_account = do_client.contacts('2b5a2632-852a-46b5-8ca5-54654040b3df').accounts().bulk_upsert(account_list)
+
+contact_list = [
+    {
+        'unique_id':'bulk_insert_1'
+    },
+    {
+        'unique_id':'bulk_insert_2'
+    }
+]
+
+do_client.contacts().bulk_upsert(contact_list)

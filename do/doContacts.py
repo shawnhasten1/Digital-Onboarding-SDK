@@ -1,21 +1,6 @@
 import requests
 import json
-
-def formatArgs(locals):
-    args = []
-    for param in locals.keys():
-        args.append(param)
-    payload = {}
-    for arg in args:
-        try:
-            if arg != 'self' and arg != 'args' and locals.get(arg) != None:
-                val = locals.get(arg)
-                if type(val) == bool:
-                    val = '1' if val else '0'
-                payload[arg] = val
-        except:
-            pass
-    return payload
+from univFunc import formatArgs
 
 class contact:
     def __init__(self, data, Client):
@@ -50,6 +35,8 @@ class contact:
         self.unsubscribe_email = data['unsubscribe_email']
         self.unsubscribe_sms = data['unsubscribe_sms']
         self.updated_at = data['updated_at']
+
+        self.accounts = None
 
     def update(self, name_title = None, name_first = None, name_last = None, name_suffix = None,
                     address = None, address2 = None, city = None, state = None, county = None, country = None, post_code = None,
@@ -86,6 +73,8 @@ class contacts:
         self.req = None
         self.status_code = None
         self.data = None
+
+        self.doAccounts = None
 
     def create(self = None, unique_id = None, name_title = None, name_first = None, name_last = None, name_suffix = None,
                     address = None, address2 = None, city = None, state = None, county = None, country = None, post_code = None,
@@ -124,6 +113,21 @@ class contacts:
         self.data = self.req.json()
         return self
 
+    def bulk_upsert(self, bulk_contacts):
+        records = []
+        for contact in bulk_contacts:
+            records.append(formatArgs(contact, False))
+        batch_api = {
+            "type": "contact",
+            "source": "api",
+            "records": records
+        }
+        self.req = requests.post(f'https://api.digitalonboarding.com/v1/batches', headers=self.Client.default_headers, data=json.dumps(batch_api))
+
+        self.status_code = self.req.status_code
+        self.data = self.req.json()
+        return self.status_code
+
     def get(self):
         self.req = requests.get(f'https://api.digitalonboarding.com/v1//contacts/{self.contact_id}', headers=self.Client.default_headers)
 
@@ -161,6 +165,22 @@ class contacts:
         for x in self.data:
             list_contacts.append(contact(x, self.Client))
         return list_contacts
+        
+    def accounts(self, account_id = None):
+        if self.doAccounts == None:
+            from do.doAccounts import accounts
+            self.doAccounts = accounts(self.Client, self.contact_id, account_id)
+        if account_id:
+            self.doAccounts.account_id = account_id
+        return self.doAccounts
+
+    def objectives(self):
+        url = f'https://api.digitalonboarding.com/v1/contacts/{self.contact_id}/accounts'
+        self.req = requests.get(url, headers=self.Client.default_headers)
+
+        self.status_code = self.req.status_code
+        self.data = self.req.json()
+        return self.data
 
     def updateObjective(self, objective_id, status):
         payload = {
