@@ -81,37 +81,13 @@ class contacts:
                     timezone = None, email = None, phone_home = None, phone_mobile = None, phone_work = None,
                     email_verified = None, email_opted_in = None, email_authorized = None,
                     sms_verified = None, sms_opted_in = None, sms_authorized = None, unsubscribe_email = None):
-        payload = {
-            "unique_id":unique_id,
-            "name_title":name_title,
-            "name_first":name_first,
-            "name_last":name_last,
-            "name_suffix":name_suffix,
-            "address":address,
-            "address2":address2,
-            "city":city,
-            "state":state,
-            "county":county,
-            "country":country,
-            "post_code":post_code,
-            "timezone":timezone,
-            "email":email,
-            "phone_home":phone_home,
-            "phone_mobile":phone_mobile,
-            "phone_work":phone_work,
-            "email_verified":email_verified,
-            "email_opted_in":email_opted_in,
-            "email_authorized":email_authorized,
-            "sms_verified":sms_verified,
-            "sms_opted_in":sms_opted_in,
-            "sms_authorized":sms_authorized,
-            "unsubscribe_email":unsubscribe_email
-        }
+        payload = formatArgs(locals())
         self.req = requests.post('https://api.digitalonboarding.com/v1/contacts', headers=self.Client.default_headers, data=payload)
 
         self.status_code = self.req.status_code
         self.data = self.req.json()
-        return self
+        print(self.data)
+        return contact(self.data, self.Client)
 
     def bulk_upsert(self, bulk_contacts):
         records = []

@@ -7,6 +7,14 @@ def getContact():
     contact = do_client.contacts('eefd2965-e3aa-4a53-9ab5-683c3d34c8a4').get()
     print(contact.name_first)
 
+def createContact():
+    new_contact = do_client.contacts().create(
+                unique_id="API_USER_1",
+                name_first="api",
+                name_last="user",
+                email="apiuser@email.com",
+                phone_mobile="1234567890")
+
 def updateContact():
     contact = do_client.contacts('eefd2965-e3aa-4a53-9ab5-683c3d34c8a4').update(name_first='Shawn 1')
     print(contact.name_first)
@@ -59,4 +67,4 @@ def uploadAccounts():
 
     do_client.contacts().accounts().bulk_upsert(account_list)
 
-updateContact()
+createContact()
